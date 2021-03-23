@@ -53,14 +53,14 @@ def attention(inputs, attention_size, time_major=False, return_alphas=False):
 
     if time_major:
         # (T,B,D) => (B,T,D)
-        inputs = tf.array_ops.transpose(inputs, [1, 0, 2])
+        inputs = tf.transpose(inputs, [1, 0, 2])
 
-    hidden_size = inputs.shape[2].value  # D value - hidden size of the RNN layer
+    hidden_size = inputs.shape[2]  # D value - hidden size of the RNN layer
 
     # Trainable parameters
-    W_omega = tf.Variable(tf.random_normal([hidden_size, attention_size], stddev=0.1))
-    b_omega = tf.Variable(tf.random_normal([attention_size], stddev=0.1))
-    u_omega = tf.Variable(tf.random_normal([attention_size], stddev=0.1))
+    W_omega = tf.Variable(tf.random.normal([hidden_size, attention_size], stddev=0.1))
+    b_omega = tf.Variable(tf.random.normal([attention_size], stddev=0.1))
+    u_omega = tf.Variable(tf.random.normal([attention_size], stddev=0.1))
 
     # Applying fully connected layer with non-linear activation to each of the B*T timestamps;
     #  the shape of `v` is (B,T,D)*(D,A)=(B,T,A), where A=attention_size
