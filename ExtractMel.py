@@ -20,6 +20,8 @@ def wgn(x, snr):
     xpower = np.sum(x**2)/len(x)
     npower = xpower / snr
     return np.random.randn(len(x)) * np.sqrt(npower)
+
+################# log-Mel Spectrograms ##############
 def getlogspec(signal,samplerate=16000,winlen=0.02,winstep=0.01,
                nfilt=26,nfft=399,lowfreq=0,highfreq=None,preemph=0.97,
                winfunc=lambda x:np.ones((x,))):
@@ -27,7 +29,8 @@ def getlogspec(signal,samplerate=16000,winlen=0.02,winstep=0.01,
     signal = ps.sigproc.preemphasis(signal,preemph)
     frames = ps.sigproc.framesig(signal, winlen*samplerate, winstep*samplerate, winfunc)
     pspec = ps.sigproc.logpowspec(frames,nfft)
-    return pspec 
+    return pspec
+
 def read_file(filename):
     file = wave.open(filename,'r')    
     params = file.getparams()
@@ -38,6 +41,8 @@ def read_file(filename):
     time = np.arange(0,wav_length) * (1.0/framerate)
     file.close()
     return wavedata, time, framerate
+
+
 def dense_to_one_hot(labels_dense, num_classes):
   """Convert class labels from scalars to one-hot vectors."""
   num_labels = labels_dense.shape[0]
@@ -64,6 +69,7 @@ def normalization(data):
     std = np.std(data,axis=0)
     data = (data-mean)/std
     return data
+
 def mapminmax(data):
     shape = np.array(data.shape,dtype = np.int32)
     for i in range(shape[0]):
@@ -71,6 +77,7 @@ def mapminmax(data):
         max = np.max(data[i,:,:,0])
         data[i,:,:,0] = (data[i,:,:,0] - min)/((max - min)+eps)
     return data
+
 def generate_label(emotion,classnum):
     label = -1
     if(emotion == 'ang'):
@@ -94,15 +101,15 @@ def load_data():
         
 def read_IEMOCAP():
     eps = 1e-5
-    tnum = 259 #the number of test utterance
+    tnum = 259  #the number of test utterance
     vnum = 298
-    test_num = 420#the number of test 2s segments
+    test_num = 420 #the number of test 2s segments
     valid_num = 436
     train_num = 2928
     filter_num = 40
-    pernums_test = np.arange(tnum)#remerber each utterance contain how many segments
+    pernums_test = np.arange(tnum) #remerber each utterance contain how many segments
     pernums_valid = np.arange(vnum)
-    rootdir = '/content/drive/MyDrive/DATAFINAL'
+    rootdir = 'C:\\Users\\Malek NAIMI\\Desktop\\PFE\\IEMOCAP_full_release_withoutVideos\\IEMOCAP_full_release'
     
     mean1,std1,mean2,std2,mean3,std3 = load_data()
     
@@ -111,7 +118,7 @@ def read_IEMOCAP():
     angnum = 433#0
     neunum = 1262#3
     sadnum = 799#1
-    pernum = 300#np.min([hapnum,angnum,sadnum,neunum])
+    pernum = 300 #np.min([hapnum,angnum,sadnum,neunum])
     #valid_num = divmod((train_num),10)[0]
     train_label = np.empty((train_num,1), dtype = np.int8)
     test_label = np.empty((tnum,1), dtype = np.int8)
@@ -132,11 +139,11 @@ def read_IEMOCAP():
     valid_emt = {'hap':0,'ang':0,'neu':0,'sad':0 }
     for speaker in os.listdir(rootdir):
         if(speaker[0] == 'S'):
-            sub_dir = os.path.join(rootdir,speaker,'sentences/wav')
-            emoevl = os.path.join(rootdir,speaker,'dialog/EmoEvaluation')
+            sub_dir = os.path.join(rootdir,speaker,'sentences\\wav')
+            emoevl = os.path.join(rootdir,speaker,'dialog\\EmoEvaluation')
             for sess in os.listdir(sub_dir):
                 if(sess[7] == 'i'):
-                    emotdir = emoevl+'/'+sess+'.txt'
+                    emotdir = emoevl+'\\'+sess+'.txt'
                     #emotfile = open(emotdir)
                     emot_map = {}
                     with open(emotdir,'r') as emot_to_read:
@@ -153,7 +160,7 @@ def read_IEMOCAP():
                     files = glob.glob(file_dir)
                     for filename in files:
                         #wavname = filename[-23:-4]
-                        wavname = filename.split("/")[-1][:-4]
+                        wavname = filename.split("\\")[-1][:-4]
                         emotion = emot_map[wavname]
                         if(emotion in ['hap','ang','neu','sad']):
                              data, time, rate = read_file(filename)
