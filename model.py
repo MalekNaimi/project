@@ -11,37 +11,49 @@ from __future__ import division
 #from __future__ import print_function
 
 import numpy as np
+
+#import tensorflow.compat.v1 as tf
+
 import tensorflow as tf
 from acrnn1 import acrnn
-import cPickle
+import pickle as cPickle
 from sklearn.metrics import recall_score as recall
 from sklearn.metrics import confusion_matrix as confusion
 import os
 
-tf.app.flags.DEFINE_integer('num_epoch', 5000, 'The number of epoches for training.')
-tf.app.flags.DEFINE_integer('num_classes', 4, 'The number of emotion classes.')
-tf.app.flags.DEFINE_integer('batch_size', 60, 'The number of samples in each batch.')
-tf.app.flags.DEFINE_boolean('is_adam', True,'whether to use adam optimizer.')
-tf.app.flags.DEFINE_float('learning_rate', 0.00001, 'learning rate of Adam optimizer')
-tf.app.flags.DEFINE_float   ('dropout_keep_prob',     1,        'the prob of every unit keep in dropout layer')
-tf.app.flags.DEFINE_integer('image_height', 300, 'image height')
-tf.app.flags.DEFINE_integer('image_width', 40, 'image width')
-tf.app.flags.DEFINE_integer('image_channel', 3, 'image channels as input')
 
-tf.app.flags.DEFINE_string  ('traindata_path', './IEMOCAP.pkl', 'total dataset includes training set')
-tf.app.flags.DEFINE_string  ('validdata_path', 'inputs/valid.pkl', 'total dataset includes valid set')
-tf.app.flags.DEFINE_string  ('checkpoint', './checkpoint/', 'the checkpoint dir')
-tf.app.flags.DEFINE_string  ('model_name', 'model4.ckpt', 'model name')
+############################ Global Variables ##############################
+#num_epoch=5000 #batch_size=60 #learning_rate=0.00001
 
-FLAGS = tf.app.flags.FLAGS
+#check
+tf.compat.v1.flags.DEFINE_integer('num_epoch', 5000, 'The number of epoches for training.')
+tf.compat.v1.flags.DEFINE_integer('num_classes', 4, 'The number of emotion classes.')
+tf.compat.v1.flags.DEFINE_integer('batch_size', 60, 'The number of samples in each batch.') ## batch size for IEMOCAP 25
+tf.compat.v1.flags.DEFINE_boolean('is_adam', True,'whether to use adam optimizer.')
+tf.compat.v1.flags.DEFINE_float('learning_rate', 0.00001, 'learning rate of Adam optimizer')
+tf.compat.v1.flags.DEFINE_float('dropout_keep_prob',     1,        'the prob of every unit keep in dropout layer')
+tf.compat.v1.flags.DEFINE_integer('image_height', 300, 'image height')
+tf.compat.v1.flags.DEFINE_integer('image_width', 40, 'image width')
+tf.compat.v1.flags.DEFINE_integer('image_channel', 3, 'image channels as input')
+
+tf.compat.v1.flags.DEFINE_string('traindata_path', './IEMOCAP.pkl', 'total dataset includes training set')
+tf.compat.v1.flags.DEFINE_string('validdata_path', 'inputs/valid.pkl', 'total dataset includes valid set')
+tf.compat.v1.flags.DEFINE_string('checkpoint', './checkpoint/', 'the checkpoint dir') #changer le path du dernier checkpoint
+tf.compat.v1.flags.DEFINE_string('model_name', 'model4.ckpt', 'model name')
+
+FLAGS = tf.compat.v1.flags.FLAGS
+
+
+##################################"### Read the data ################################
 
 def load_data(in_dir):
     f = open(in_dir,'rb')
     train_data,train_label,test_data,test_label,valid_data,valid_label,Valid_label,Test_label,pernums_test,pernums_valid = cPickle.load(f)
     #train_data,train_label,test_data,test_label,valid_data,valid_label = cPickle.load(f)
     return train_data,train_label,test_data,test_label,valid_data,valid_label,Valid_label,Test_label,pernums_test,pernums_valid
+
+#################### Convert class labels from scalars to one-hot vectors ########################
 def dense_to_one_hot(labels_dense, num_classes):
-    """Convert class labels from scalars to one-hot vectors."""
     num_labels = labels_dense.shape[0]
     index_offset = np.arange(num_labels) * num_classes
     labels_one_hot = np.zeros((num_labels, num_classes))
@@ -61,29 +73,33 @@ def train():
     best_valid_uw = 0
     
     
-    ##########tarin model###########
-    X = tf.placeholder(tf.float32, shape=[None, FLAGS.image_height,FLAGS.image_width,FLAGS.image_channel])
-    Y = tf.placeholder(tf.int32, shape=[None, FLAGS.num_classes])
-    is_training = tf.placeholder(tf.bool)
-    lr = tf.placeholder(tf.float32)
-    keep_prob = tf.placeholder(tf.float32)
+    ###############train model###############
+    # #tf.enable_eager_execution()
+
+    tf.compat.v1.disable_eager_execution()
+    X = tf.compat.v1.placeholder(tf.float32, shape=[None, FLAGS.image_height,FLAGS.image_width,FLAGS.image_channel])
+    Y = tf.compat.v1.placeholder(tf.int32, shape=[None, FLAGS.num_classes])
+    is_training = tf.compat.v1.placeholder(tf.bool)
+    lr = tf.compat.v1.placeholder(tf.float32)
+    keep_prob = tf.compat.v1.placeholder(tf.float32)
     Ylogits = acrnn(X, is_training=is_training, dropout_keep_prob=keep_prob)
     cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels =  Y, logits =  Ylogits)
     cost = tf.reduce_mean(cross_entropy)
-    var_trainable_op = tf.trainable_variables()
+    var_trainable_op = tf.compat.v1.trainable_variables()
     if FLAGS.is_adam:
         # not apply gradient clipping
-        train_op = tf.train.AdamOptimizer(lr).minimize(cost)            
+        train_op = tf.compat.v1.train.AdamOptimizer(lr).minimize(cost)
     else:
         # apply gradient clipping
         grads, _ = tf.clip_by_global_norm(tf.gradients(cost, var_trainable_op), 5)
-        opti = tf.train.AdamOptimizer(lr)
+        opti = tf.compat.v1.train.AdamOptimizer(lr)
         train_op = opti.apply_gradients(zip(grads, var_trainable_op))
     correct_pred = tf.equal(tf.argmax(Ylogits, 1), tf.argmax(Y,1))
+
     accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
-    saver=tf.train.Saver(tf.global_variables())
-    init = tf.global_variables_initializer()
-    with tf.Session() as sess:
+    saver=tf.compat.v1.train.Saver(tf.compat.v1.global_variables())
+    init = tf.compat.v1.global_variables_initializer()
+    with tf.compat.v1.Session() as sess:
         sess.run(init)
         for i in range(FLAGS.num_epoch):
             #learning_rate = FLAGS.learning_rate            
