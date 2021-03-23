@@ -19,7 +19,7 @@ import numpy as np
 import python_speech_features as ps
 import os
 import glob
-import cPickle
+import pickle as cPickle
 #import base
 #import sigproc
 eps = 1e-5
@@ -100,7 +100,7 @@ def read_IEMOCAP():
     
     train_num = 2928
     filter_num = 40
-    rootdir = '/home/jamhan/hxj/datasets/IEMOCAP_full_release'
+    rootdir = '/content/drive/MyDrive/DATAFINAL'
     traindata1 = np.empty((train_num*300,filter_num),dtype=np.float32)
     traindata2 = np.empty((train_num*300,filter_num),dtype=np.float32)
     traindata3 = np.empty((train_num*300,filter_num),dtype=np.float32)
