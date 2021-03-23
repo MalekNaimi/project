@@ -11,7 +11,7 @@ import numpy as np
 import python_speech_features as ps
 import os
 import glob
-import cPickle
+import pickle as cPickle
 #import base
 #import sigproc
 eps = 1e-5
@@ -102,7 +102,7 @@ def read_IEMOCAP():
     filter_num = 40
     pernums_test = np.arange(tnum)#remerber each utterance contain how many segments
     pernums_valid = np.arange(vnum)
-    rootdir = '/home/jamhan/hxj/datasets/IEMOCAP_full_release'
+    rootdir = '/content/drive/MyDrive/DATAFINAL'
     
     mean1,std1,mean2,std2,mean3,std3 = load_data()
     
