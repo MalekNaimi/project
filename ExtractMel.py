@@ -109,7 +109,7 @@ def read_IEMOCAP():
     filter_num = 40
     pernums_test = np.arange(tnum) #remerber each utterance contain how many segments
     pernums_valid = np.arange(vnum)
-    rootdir = 'C:\\Users\\Malek NAIMI\\Desktop\\PFE\\IEMOCAP_full_release_withoutVideos\\IEMOCAP_full_release'
+    rootdir = '/content/drive/MyDrive/DATAFINAL'
     
     mean1,std1,mean2,std2,mean3,std3 = load_data()
     
