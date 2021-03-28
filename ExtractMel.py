@@ -139,11 +139,11 @@ def read_IEMOCAP():
     valid_emt = {'hap':0,'ang':0,'neu':0,'sad':0 }
     for speaker in os.listdir(rootdir):
         if(speaker[0] == 'S'):
-            sub_dir = os.path.join(rootdir,speaker,'sentences\\wav')
-            emoevl = os.path.join(rootdir,speaker,'dialog\\EmoEvaluation')
+            sub_dir = os.path.join(rootdir,speaker,'sentences/wav')
+            emoevl = os.path.join(rootdir,speaker,'dialog/EmoEvaluation')
             for sess in os.listdir(sub_dir):
                 if(sess[7] == 'i'):
-                    emotdir = emoevl+'\\'+sess+'.txt'
+                    emotdir = emoevl+'/'+sess+'.txt'
                     #emotfile = open(emotdir)
                     emot_map = {}
                     with open(emotdir,'r') as emot_to_read:
@@ -160,7 +160,7 @@ def read_IEMOCAP():
                     files = glob.glob(file_dir)
                     for filename in files:
                         #wavname = filename[-23:-4]
-                        wavname = filename.split("\\")[-1][:-4]
+                        wavname = filename.split("/")[-1][:-4]
                         emotion = emot_map[wavname]
                         if(emotion in ['hap','ang','neu','sad']):
                              data, time, rate = read_file(filename)
