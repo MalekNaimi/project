@@ -45,6 +45,7 @@ def acrnn(inputs, num_classes=4,
                   time_step=150,
                   F1=64,
                   dropout_keep_prob=1):
+    ####CNN layers#####
     layer1_filter = tf.compat.v1.get_variable('layer1_filter', shape=[5, 3, 3, L1], dtype=tf.float32,
                                     initializer=tf.compat.v1.truncated_normal_initializer(stddev=0.1))
     layer1_bias = tf.compat.v1.get_variable('layer1_bias', shape=[L1], dtype=tf.float32,
@@ -131,7 +132,7 @@ def acrnn(inputs, num_classes=4,
     linear1 = tf.reshape(linear1, [-1, time_step, num_linear])
     
     
-    
+    #####LSTM layers#########
     # Define lstm cells with tensorflow
     # Forward direction cell
     gru_fw_cell1 = tf.compat.v1.nn.rnn_cell.BasicLSTMCell(cell_units, forget_bias=1.0)
