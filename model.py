@@ -76,7 +76,7 @@ def train():
     ###############train model###############
     # #tf.enable_eager_execution()
 
-    #tf.compat.v1.disable_eager_execution()
+    tf.compat.v1.disable_eager_execution()
     X = tf.compat.v1.placeholder(tf.float32, shape=[None, FLAGS.image_height,FLAGS.image_width,FLAGS.image_channel])
     Y = tf.compat.v1.placeholder(tf.int32, shape=[None, FLAGS.num_classes])
     is_training = tf.compat.v1.placeholder(tf.bool)
