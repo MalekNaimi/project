@@ -28,7 +28,7 @@ import os
 #check
 tf.compat.v1.flags.DEFINE_integer('num_epoch', 5000, 'The number of epoches for training.')
 tf.compat.v1.flags.DEFINE_integer('num_classes', 4, 'The number of emotion classes.')
-tf.compat.v1.flags.DEFINE_integer('batch_size', 60, 'The number of samples in each batch.') ## batch size for IEMOCAP 25
+tf.compat.v1.flags.DEFINE_integer('batch_size', 30, 'The number of samples in each batch.') ## batch size for IEMOCAP 25
 tf.compat.v1.flags.DEFINE_boolean('is_adam', True,'whether to use adam optimizer.')
 tf.compat.v1.flags.DEFINE_float('learning_rate', 0.0000001, 'learning rate of Adam optimizer')
 tf.compat.v1.flags.DEFINE_float('dropout_keep_prob',     1,        'the prob of every unit keep in dropout layer')
