@@ -105,7 +105,7 @@ def read_IEMOCAP():
     vnum = 298
     test_num = 420 #the number of test 2s segments
     valid_num = 436
-    train_num = 2928
+    train_num = 400 #2928
     filter_num = 40
     pernums_test = np.arange(tnum) #remerber each utterance contain how many segments
     pernums_valid = np.arange(vnum)
