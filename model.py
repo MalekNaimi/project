@@ -67,6 +67,8 @@ def train():
     
     print(train_data.shape)
     print(train_data)
+    check not np.any(np.isnan(train_data))
+    print(check)
     print(train_label.shape)
     print(valid_data.shape)
     print(valid_label.shape)
