@@ -68,6 +68,8 @@ def normalization(data):
     mean = np.mean(data,axis=0)#axis=0纵轴方向求均值
     std = np.std(data,axis=0)
     data = (data-mean)/std
+    train_data = zscore(train_data,mean,std) #add
+    test_data = zscore(test_data,mean,std)  #add
     return data
 
 def mapminmax(data):
