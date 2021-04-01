@@ -64,6 +64,13 @@ def train():
     #####load data##########
     
     train_data,train_label,test_data,test_label,valid_data,valid_label,Valid_label,Test_label,pernums_test,pernums_valid = load_data(FLAGS.traindata_path)
+    
+    print(train_data.shape)     
+    print(train_label.shape)
+    print(valid_data.shape)
+    print(valid_label.shape)
+    
+    
     train_label = dense_to_one_hot(train_label,FLAGS.num_classes)
     valid_label = dense_to_one_hot(valid_label,FLAGS.num_classes)
     Valid_label = dense_to_one_hot(Valid_label,FLAGS.num_classes)
