@@ -65,7 +65,8 @@ def train():
     
     train_data,train_label,test_data,test_label,valid_data,valid_label,Valid_label,Test_label,pernums_test,pernums_valid = load_data(FLAGS.traindata_path)
     
-    print(train_data.shape)     
+    print(train_data.shape)
+    print(train_data[1:5,1:5,:,:])
     print(train_label.shape)
     print(valid_data.shape)
     print(valid_label.shape)
@@ -77,7 +78,7 @@ def train():
     valid_size = valid_data.shape[0]
     print('valid size = ',valid_size) #add
     dataset_size = train_data.shape[0]
-    print('dataset size = ',sataset_size) #add
+    print('dataset size = ',dataset_size) #add
     vnum = pernums_valid.shape[0]
     best_valid_uw = 0
     
