@@ -68,7 +68,9 @@ def train():
     valid_label = dense_to_one_hot(valid_label,FLAGS.num_classes)
     Valid_label = dense_to_one_hot(Valid_label,FLAGS.num_classes)
     valid_size = valid_data.shape[0]
+    print('valid size = ',valid_size) #add
     dataset_size = train_data.shape[0]
+    print('dataset size = ',sataset_size) #add
     vnum = pernums_valid.shape[0]
     best_valid_uw = 0
     
