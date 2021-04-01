@@ -66,7 +66,7 @@ def train():
     train_data,train_label,test_data,test_label,valid_data,valid_label,Valid_label,Test_label,pernums_test,pernums_valid = load_data(FLAGS.traindata_path)
     
     print(train_data.shape)
-    print(train_data[1:5,1:5,:,:])
+    print(train_data)
     print(train_label.shape)
     print(valid_data.shape)
     print(valid_label.shape)
