@@ -164,8 +164,8 @@ def read_IEMOCAP():
                         emotion = emot_map[wavname]
                         if(emotion in ['hap','ang','neu','sad']):
                              data, time, rate = read_file(filename)
-                             mel_spec = ps.logfbank(data,rate,nfilt = filter_num)
-                             delta1 = ps.delta(mel_spec, 2)
+                             mel_spec = ps.logfbank(data,rate,nfilt = filter_num)     #####Log Filterbank Energies
+                             delta1 = ps.delta(mel_spec, 2)  
                              delta2 = ps.delta(delta1, 2)
                              #apply zscore
                              
