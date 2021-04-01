@@ -114,11 +114,11 @@ def read_IEMOCAP():
     mean1,std1,mean2,std2,mean3,std3 = load_data()
     
     #2774
-    hapnum = 434#2
-    angnum = 433#0
-    neunum = 1262#3
-    sadnum = 799#1
-    pernum = 300 #np.min([hapnum,angnum,sadnum,neunum])
+    hapnum = 100 #434 #2
+    angnum = 100 #433 #0
+    neunum = 100 #1262 #3
+    sadnum = 100 #799 #1
+    pernum = 100 #300 #np.min([hapnum,angnum,sadnum,neunum])
     #valid_num = divmod((train_num),10)[0]
     train_label = np.empty((train_num,1), dtype = np.int8)
     test_label = np.empty((tnum,1), dtype = np.int8)
